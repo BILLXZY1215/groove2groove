@@ -104,3 +104,16 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.vscode/
+data/bodhidharma/01_fixed/
+data/bodhidharma/02_filtered/
+data/bodhidharma/03_chopped/
+data/bodhidharma/04_separated/
+data/bodhidharma/05_db/
+data/bodhidharma/MIDI_Files/
+data/bodhidharma/final/
+data/synth/groove2groove-data-v1.0.0.tar.gz
+data/synth/test/
+data/synth/train/
+data/synth/val/
