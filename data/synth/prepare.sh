@@ -51,13 +51,13 @@ mkdir "$dir" && {
     prefix=$(basename "${recordfile%.tfrecord}")
     python -m groove2groove.scripts.tfrecord_to_lmdb "$recordfile" "$tmp_dir/$prefix.db" || die
     rm -f "$tmp_dir/$prefix".db-lock
-    mv -v -t "$dir" "$tmp_dir/$prefix"* || die
+    gmv -v -t "$dir" "$tmp_dir/$prefix"* || die
   done
 }
 
 dir=final
 mkdir "$dir" && {
-  ln -t "$dir" 03_separated/* 04_db/*
+  gln -t "$dir" 03_separated/* 04_db/*
 
   # Add keys, song names and styles to the metadata.
   zcat 02_chopped/data_meta.json.gz | python3 -c '
