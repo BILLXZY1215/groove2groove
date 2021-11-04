@@ -3,7 +3,7 @@ random_seed: 42
 input_encoding:
   class: !!python/name:museflow.encodings.PianoRollEncoding
   normalize: True
-  sampling_frequency: 4  # 4 samples per beat  (tempo is forced to 60 BPM)
+  sampling_frequency: 4 # 4 samples per beat  (tempo is forced to 60 BPM)
 output_encoding:
   class: !!python/name:groove2groove.beat_relative_encoding.BeatRelativeEncoding
   use_velocity: True
@@ -21,20 +21,20 @@ model:
     2d_layers:
       - class: !!python/name:tensorflow.layers.Conv2D
         filters: 32
-        kernel_size: [12,12]
+        kernel_size: [12, 12]
         padding: same
         activation: !!python/name:tensorflow.nn.elu
       - class: !!python/name:tensorflow.layers.MaxPooling2D
-        pool_size: [2,2]
-        strides: [2,2]
+        pool_size: [2, 2]
+        strides: [2, 2]
       - class: !!python/name:tensorflow.layers.Conv2D
         filters: 32
-        kernel_size: [4,4]
+        kernel_size: [4, 4]
         padding: same
         activation: !!python/name:tensorflow.nn.elu
       - class: !!python/name:tensorflow.layers.MaxPooling2D
-        pool_size: [2,4]
-        strides: [2,4]
+        pool_size: [2, 4]
+        strides: [2, 4]
   encoder_rnn:
     forward_cell:
       num_units: 200
@@ -75,7 +75,7 @@ model:
   decoder:
     cell:
       num_units: 1024
-    max_length: 5000  # for inference only
+    max_length: 5000 # for inference only
 
   training:
     lr_decay:
@@ -90,11 +90,11 @@ trainer:
   validation_period: 800
 
 train_data:
-  db_path: ../data/synth/train/final/shuf/all_except_drums.db
-  metadata_path: ../data/synth/train/final/shuf/meta.json.gz
+  db_path: ./data/synth/train/final/shuf/all_except_drums.db
+  metadata_path: ./data/synth/train/final/meta.json.gz
 val_data:
-  db_path: ../data/synth/val/final/all_except_drums.db
-  metadata_path: ../data/synth/val/final/meta.json.gz
+  db_path: ./data/synth/val/final/all_except_drums.db
+  metadata_path: ./data/synth/val/final/meta.json.gz
 
 style_note_filters:
   Bass:
@@ -108,7 +108,7 @@ style_note_filters:
 
 data_prep:
   num_epochs: 1
-  num_train_examples: 1229191  # 1/2 epoch
+  num_train_examples: 1229191 # 1/2 epoch
   train_batch_size: 64
   val_batch_size: 128
   shuffle_buffer_size: 2000
