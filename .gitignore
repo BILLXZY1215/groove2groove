@@ -117,3 +117,7 @@ data/synth/groove2groove-data-v1.0.0.tar.gz
 data/synth/test/
 data/synth/train/
 data/synth/val/
+
+*.DS_Store
+experiments/v01_vel/latest.ckpt-0.data-00000-of-00001
+experiments/v01_vel/best.ckpt-0.data-00000-of-00001
