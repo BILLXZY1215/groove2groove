@@ -60,7 +60,7 @@ mkdir "$dir" && {
   gln -t "$dir" 03_separated/* 04_db/*
 
   # Add keys, song names and styles to the metadata.
-  zcat 02_chopped/data_meta.json.gz | python3 -c '
+  gunzip -c 02_chopped/data_meta.json.gz | python3 -c '
 import json, sys
 data = json.load(sys.stdin)
 data_dict = {}
