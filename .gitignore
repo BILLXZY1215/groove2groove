@@ -127,3 +127,5 @@ experiments/v01/best.ckpt-4000.data-00000-of-00001
 experiments/v01/latest.ckpt-4000.data-00000-of-00001
 experiments/v01/best.ckpt-4800.data-00000-of-00001
 experiments/v01/latest.ckpt-4800.data-00000-of-00001
+experiments/v01/best.ckpt-5600.data-00000-of-00001
+experiments/v01/latest.ckpt-5600.data-00000-of-00001

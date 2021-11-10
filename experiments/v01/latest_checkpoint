@@ -1,2 +1,2 @@
-model_checkpoint_path: "latest.ckpt-4800"
-all_model_checkpoint_paths: "latest.ckpt-4800"
+model_checkpoint_path: "latest.ckpt-5600"
+all_model_checkpoint_paths: "latest.ckpt-5600"
