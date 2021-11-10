@@ -123,3 +123,5 @@ experiments/v01_vel/latest.ckpt-0.data-00000-of-00001
 experiments/v01_vel/best.ckpt-0.data-00000-of-00001
 experiments/v01/latest.ckpt-0.data-00000-of-00001
 experiments/v01/best.ckpt-0.data-00000-of-00001
+experiments/v01/best.ckpt-4000.data-00000-of-00001
+experiments/v01/latest.ckpt-4000.data-00000-of-00001
