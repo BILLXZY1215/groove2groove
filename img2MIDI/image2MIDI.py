@@ -10,7 +10,9 @@ def image2MIDI(image_path, instrument):
     img = np.array(Image.open(image_path))  # RGB Matrix
     img = cv2.resize(img, (106, 100))
     img = np.dot(img, [0.33, 0.33, 0.33])
-    print(img.shape)
+    # for piano_row in img.T:
+    # TODO: index of chosen note
+
     # Create a PrettyMIDI object
     c_chord = pretty_midi.PrettyMIDI()
     # Create an Instrument instance for a specified instrument
@@ -35,7 +37,7 @@ def image2MIDI(image_path, instrument):
     for chord in chord_progress:
         for note_name in chord:
             note_number = pretty_midi.note_name_to_number(note_name)
-            print(note_number)
+            # print(note_number)
             note = pretty_midi.Note(
                 velocity=100, pitch=note_number, start=0+interval*i, end=interval*(i+1))
             instr.notes.append(note)
