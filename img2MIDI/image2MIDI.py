@@ -49,6 +49,8 @@ def findCloset(A, B, C):
     # print(A[res_i], ' ', B[res_j], ' ', C[res_k])
     return [A[res_i],  B[res_j], C[res_k]]
 
+# TODO: Set Main Major
+
 
 def threeChordMapping(note_list):
     if len(note_list) != 3:
