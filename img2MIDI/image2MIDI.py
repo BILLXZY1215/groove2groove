@@ -11,6 +11,9 @@ import sys
 
 
 def findCloset(A, B, C):
+    A = A.tolist()
+    B = B.tolist()
+    C = C.tolist()
     p = len(A)
     q = len(B)
     r = len(C)
@@ -52,12 +55,19 @@ def findCloset(A, B, C):
     return [A[res_i],  B[res_j], C[res_k]]
 
 
-def image2MIDI(image_path, instrument):
+def image2MIDI(image_path, instrument, interval):
+    interval = float(interval)
+    c_chord = pretty_midi.PrettyMIDI()
+    # Create an Instrument instance for a specified instrument
+    # TODO: Implement Instrument Name Category
+    program = pretty_midi.instrument_name_to_program(instrument)
+    instr = pretty_midi.Instrument(program=program)
 
     img = np.array(Image.open(image_path))  # RGB Matrix
     img = cv2.resize(img, (106, 100))
     img = np.dot(img, [0.33, 0.33, 0.33])
-    # TODO: index of chosen note
+
+    i = 0
     for piano_row in img.T:
         unique_array = np.unique(piano_row, return_counts=True)
         value_unique_array = unique_array[0]
@@ -79,42 +89,26 @@ def image2MIDI(image_path, instrument):
             piano_row == trd_freq_pixel)
         print('index: ', max_freq_index,
               snd_freq_index, trd_freq_index)
-        # TODO: Three most frequent index: three different range or instruments
-        # max_index = np.where(piano_row == unique_array[len(unique_array)-1])
-        # second_max_index = np.where(
-        #     piano_row == unique_array[len(unique_array)-2])
-        # third_max_index = np.where(
-        #     piano_row == unique_array[len(unique_array)-3])
-        # # Get 3 most highest pixel value of note index
-        # print('max:', max_index)
-        # print('second_max:', second_max_index)
-        # print('third_max:', third_max_index)
-    c_chord = pretty_midi.PrettyMIDI()
-    # Create an Instrument instance for a specified instrument
-    # TODO: Implement Instrument Name Category
-    program = pretty_midi.instrument_name_to_program(instrument)
-    instr = pretty_midi.Instrument(program=program)
+        most_freq_closet_index = findCloset(
+            max_freq_index[0], snd_freq_index[0], trd_freq_index[0])
+        # TODO: chord mapping
     # Iterate over note names, which will be converted to note number later
     # Example: C Major
     # C D E F G A B C
     # 1 2 3 4 5 6 7 1
     # 72 74 76 77 79 81 83 85
-    C = ['C5', 'E5', 'G5']  # 1 3 5
-    Dm = ['D5', 'F5', 'A5']  # 2 4 6
-    D = ['D5', 'F5#', 'A5']  # 2 4 6
-    Em = ['E5', 'G5', 'B5']  # 3 5 7
-    F = ['F5', 'A5', 'C5']  # 4 6 1
-    G = ['G5', 'B5', 'D5']  # 5 7 2
-    Am = ['A5', 'C5', 'E5']  # 6 1 3
-    Bm = ['B5', 'D5', 'F5']  # 7 2 4
+    # C = ['C5', 'E5', 'G5']  # 1 3 5
+    # Dm = ['D5', 'F5', 'A5']  # 2 4 6
+    # D = ['D5', 'F5#', 'A5']  # 2 4 6
+    # Em = ['E5', 'G5', 'B5']  # 3 5 7
+    # F = ['F5', 'A5', 'C5']  # 4 6 1
+    # G = ['G5', 'B5', 'D5']  # 5 7 2
+    # Am = ['A5', 'C5', 'E5']  # 6 1 3
+    # Bm = ['B5', 'D5', 'F5']  # 7 2 4
     # TODO: Implement chord database
-    chord_progress = [C, Am, F, G]  # Sample: 1645
-    interval = 2
-    i = 0
-    for chord in chord_progress:
-        for note_name in chord:
-            note_number = pretty_midi.note_name_to_number(note_name)
-            # print(chord, note_number)
+    # chord_progress = [C, Am, F, G]  # Sample: 1645
+        for note_name in most_freq_closet_index:
+            note_number = note_name + 21
             note = pretty_midi.Note(
                 velocity=100, pitch=note_number, start=0+interval*i, end=interval*(i+1))
             instr.notes.append(note)
@@ -128,5 +122,6 @@ def image2MIDI(image_path, instrument):
 
 image_path = sys.argv[1]
 instrument = sys.argv[2]
+interval = sys.argv[3]
 
-image2MIDI(image_path, instrument)
+image2MIDI(image_path, instrument, interval)
