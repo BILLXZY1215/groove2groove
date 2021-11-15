@@ -119,13 +119,19 @@ def threeChordMapping(note_list):
     return new_note_list
 
 
-def image2MIDI(image_path, instrument, interval):
+def image2MIDI(image_path, interval):
     interval = float(interval)
     c_chord = pretty_midi.PrettyMIDI()
     # Create an Instrument instance for a specified instrument
     # TODO: Implement Instrument Name Category
-    program = pretty_midi.instrument_name_to_program(instrument)
-    instr = pretty_midi.Instrument(program=program)
+    EGC = pretty_midi.Instrument(
+        program=pretty_midi.instrument_name_to_program('Electric Guitar (clean)'))
+
+    EBF = pretty_midi.Instrument(
+        program=pretty_midi.instrument_name_to_program('Electric Bass (finger)'))
+
+    EGP = pretty_midi.Instrument(
+        program=pretty_midi.instrument_name_to_program('Electric Grand Piano'))
 
     img = np.array(Image.open(image_path))  # RGB Matrix
     img = cv2.resize(img, (88, 100))
@@ -176,17 +182,23 @@ def image2MIDI(image_path, instrument, interval):
             note_number = note_name + 21
             note = pretty_midi.Note(
                 velocity=100, pitch=note_number, start=0+interval*i, end=interval*(i+1))
-            instr.notes.append(note)
+            if note_number < 59:
+                EBF.notes.append(note)
+            elif note_number < 83:
+                EGC.notes.append(note)
+            else:
+                EGP.notes.append(note)
         i = i + 1
 
     # Add the instr instrument to the PrettyMIDI object
-    c_chord.instruments.append(instr)
+    c_chord.instruments.append(EBF)
+    c_chord.instruments.append(EGC)
+    c_chord.instruments.append(EGP)
     # Write out the MIDI data
-    c_chord.write('{}-C-chord.mid'.format(instrument))
+    c_chord.write('C-chord.mid')
 
 
 image_path = sys.argv[1]
-instrument = sys.argv[2]
-interval = sys.argv[3]
+interval = sys.argv[2]
 
-image2MIDI(image_path, instrument, interval)
+image2MIDI(image_path, interval)
