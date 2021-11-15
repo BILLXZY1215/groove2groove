@@ -4,11 +4,6 @@ import numpy as np
 import pretty_midi
 import sys
 
-# Python program to find 3 elements such
-# that max(abs(A[i]-B[j]), abs(B[j]- C[k]),
-# abs(C[k]-A[i])) is minimized.
-import sys
-
 
 def findCloset(A, B, C):
     A = A.tolist()
@@ -64,8 +59,8 @@ def image2MIDI(image_path, instrument, interval):
     instr = pretty_midi.Instrument(program=program)
 
     img = np.array(Image.open(image_path))  # RGB Matrix
-    img = cv2.resize(img, (106, 100))
-    img = np.dot(img, [0.33, 0.33, 0.33])
+    img = cv2.resize(img, (88, 100))
+    img = np.dot(img, [0.33, 0.33, 0.33])  # TODO: improvement on colors
 
     i = 0
     for piano_row in img.T:
