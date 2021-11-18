@@ -94,8 +94,8 @@ def threeChordMapping(note_list):
             note_list[three] = note_list[three] + 12
         diff = abs(note_list[three] - note_list[n])
     # Now, three notes should be in the same range
-    # Set: (0, +3, +6), (0, +3, +7), (0, +3, +9), (0, +4, +7), (0, +4, +9), (0, +5, +9)
-    chord_set = [[3, 6], [3, 7], [3, 9], [4, 7], [4, 9], [5, 9]]
+    # Set: (0, +3, +7), (0, +4, +7)
+    chord_set = [[3, 7], [4, 7]]
     new_note_list = [note_list[one], note_list[two], note_list[three]]
     new_note_list.sort()
     # print(new_note_list)
@@ -166,16 +166,16 @@ def image2MIDI(image_path, interval):
     # Example: C Major
     # C D E F G A B C
     # 1 2 3 4 5 6 7 1
-    # 72 74 76 77 79 81 83 85
-    # C = ['C5', 'E5', 'G5']  # 1 3 5 (72 76 79) (0, +3, +6)
+    # 72 74 76 77 79 81 83 84
+    # C = ['C5', 'E5', 'G5']  # 1 3 5 (72 76 79) (0, +4, +7)
     # Dm = ['D5', 'F5', 'A5']  # 2 4 6 (74 77 81) (0, +3, +7)
     # D = ['D5', 'F5#', 'A5']  # 2 4 6 (74 78 81) (0, +4, +7)
     # Em = ['E5', 'G5', 'B5']  # 3 5 7 (76 79 83) (0, +3, +7)
-    # F = ['F5', 'A5', 'C5']  # 4 6 1 (77 81 72) (0, +5, +9)
-    # G = ['G5', 'B5', 'D5']  # 5 7 2 (79, 83, 74) (0, +5, +9)
-    # Am = ['A5', 'C5', 'E5']  # 6 1 3 (81 72 76) (0, +4, +9)
-    # Bm = ['B5', 'D5', 'F5']  # 7 2 4 (83 74 77) (0, +3, +9)
-    # Set: (0, +3, +6), (0, +3, +7), (0, +3, +9), (0, +4, +7), (0, +4, +9), (0, +5, +9)
+    # F = ['F5', 'A5', 'C6']  # 4 6 1 (77 81 84) (0, +4, +7)
+    # G = ['G5', 'B5', 'D6']  # 5 7 2 (79, 83, 86) (0, +4, +7)
+    # Am = ['A5', 'C6', 'E6']  # 6 1 3 (81 84 88) (0, +3, +7)
+    # Bm = ['B5', 'D6', 'F6#']  # 7 2 4 (83 86 90) (0, +3, +7)
+    # Set: (0, +3, +7), (0, +4, +7)
     # TODO: Implement chord database
     # chord_progress = [C, Am, F, G]  # Sample: 1645
         for note_name in three_chord_index:
