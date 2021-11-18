@@ -195,7 +195,7 @@ def image2MIDI(image_path, interval):
     c_chord.instruments.append(EGC)
     c_chord.instruments.append(EGP)
     # Write out the MIDI data
-    c_chord.write('C-chord.mid')
+    c_chord.write('content.mid')
 
 
 image_path = sys.argv[1]
