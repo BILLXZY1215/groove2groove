@@ -124,8 +124,8 @@ def image2MIDI(image_path, interval):
     c_chord = pretty_midi.PrettyMIDI()
     # Create an Instrument instance for a specified instrument
     # TODO: Implement Instrument Name Category
-    EGC = pretty_midi.Instrument(
-        program=pretty_midi.instrument_name_to_program('Electric Guitar (clean)'))
+    # EGC = pretty_midi.Instrument(
+    #     program=pretty_midi.instrument_name_to_program('Electric Guitar (clean)'))
 
     EBF = pretty_midi.Instrument(
         program=pretty_midi.instrument_name_to_program('Electric Bass (finger)'))
@@ -182,17 +182,15 @@ def image2MIDI(image_path, interval):
             note_number = note_name + 21
             note = pretty_midi.Note(
                 velocity=100, pitch=note_number, start=0+interval*i, end=interval*(i+1))
-            if note_number < 59:
+            # Bass: 40 - 400 Hz (27 -> 67) (A0 -> G4)
+            # Piano: 27 - 4200 Hz (21 -> 108) (A0 -> C8)
+            if note_number < 67:
                 EBF.notes.append(note)
-            elif note_number < 83:
-                EGC.notes.append(note)
-            else:
-                EGP.notes.append(note)
+            EGP.notes.append(note)
         i = i + 1
 
     # Add the instr instrument to the PrettyMIDI object
     c_chord.instruments.append(EBF)
-    c_chord.instruments.append(EGC)
     c_chord.instruments.append(EGP)
     # Write out the MIDI data
     c_chord.write('content.mid')
