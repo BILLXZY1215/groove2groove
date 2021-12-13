@@ -184,7 +184,7 @@ def image2MIDI(image_path, interval):
                 velocity=100, pitch=note_number, start=0+interval*i, end=interval*(i+1))
             # Bass: 40 - 400 Hz (27 -> 67) (A0 -> G4)
             # Piano: 27 - 4200 Hz (21 -> 108) (A0 -> C8)
-            if note_number < 67:
+            if note_number <= 67 and note_number >= 27:
                 EBF.notes.append(note)
             EGP.notes.append(note)
         i = i + 1
