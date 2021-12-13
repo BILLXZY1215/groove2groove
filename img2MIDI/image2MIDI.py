@@ -115,8 +115,39 @@ def threeChordMapping(note_list):
             res = chord_offset
     new_note_list[1] = new_note_list[0] + res[0]
     new_note_list[2] = new_note_list[0] + res[1]
-    print(new_note_list)
+    # print(new_note_list)
     return new_note_list
+
+
+def melody(note_list):
+    root_list = [i[0] for i in note_list]
+    # Apply 1645  root: (n, n+9, n+5, n+7)
+    temp_list = []
+    for i in range(1, len(note_list)):
+        if root_list[i] == root_list[i-1]:
+            temp_list.append(i-1)
+        else:
+            root = root_list[temp_list[0]]
+            k = 0
+            for item in temp_list:
+                if k % 4 == 1:
+                    # 6
+                    root_list[item] = root_list[item] + 9
+                    note_list[item] = [i + 9 for i in note_list[item]]
+                if k % 4 == 2:
+                    # 4
+                    root_list[item] = root_list[item] + 5
+                    note_list[item] = [i + 5 for i in note_list[item]]
+                if k % 4 == 3:
+                    # 5
+                    root_list[item] = root_list[item] + 7
+                    note_list[item] = [i + 7 for i in note_list[item]]
+                k += 1
+
+            temp_list = [i]
+
+    print(root_list)
+    return note_list
 
 
 def image2MIDI(image_path, interval):
@@ -138,6 +169,7 @@ def image2MIDI(image_path, interval):
     img = np.dot(img, [0.33, 0.33, 0.33])  # TODO: improvement on colors
 
     i = 0
+    three_chord_indices = []
     for piano_row in img.T:
         unique_array = np.unique(piano_row, return_counts=True)
         value_unique_array = unique_array[0]
@@ -161,6 +193,8 @@ def image2MIDI(image_path, interval):
         most_freq_closet_index = findClosest(
             max_freq_index[0], snd_freq_index[0], trd_freq_index[0])
         three_chord_index = threeChordMapping(most_freq_closet_index)
+        # print(three_chord_index)
+        three_chord_indices.append(three_chord_index)
         # TODO: chord mapping
     # Iterate over note names, which will be converted to note number later
     # Example: C Major
@@ -178,6 +212,8 @@ def image2MIDI(image_path, interval):
     # Set: (0, +3, +7), (0, +4, +7)
     # TODO: Implement chord database
     # chord_progress = [C, Am, F, G]  # Sample: 1645
+    three_chord_melody_indices = melody(three_chord_indices)
+    for three_chord_index in three_chord_melody_indices:
         for note_name in three_chord_index:
             note_number = note_name + 21
             note = pretty_midi.Note(
@@ -188,7 +224,6 @@ def image2MIDI(image_path, interval):
                 EBF.notes.append(note)
             EGP.notes.append(note)
         i = i + 1
-
     # Add the instr instrument to the PrettyMIDI object
     c_chord.instruments.append(EBF)
     c_chord.instruments.append(EGP)
