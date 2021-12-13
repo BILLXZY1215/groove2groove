@@ -5,7 +5,7 @@ import pretty_midi
 import sys
 
 
-def findCloset(A, B, C):
+def findClosest(A, B, C):
     A = A.tolist()
     B = B.tolist()
     C = C.tolist()
@@ -158,7 +158,7 @@ def image2MIDI(image_path, interval):
         trd_freq_index = np.where(
             piano_row == trd_freq_pixel)
         # print('index: ', max_freq_index, snd_freq_index, trd_freq_index)
-        most_freq_closet_index = findCloset(
+        most_freq_closet_index = findClosest(
             max_freq_index[0], snd_freq_index[0], trd_freq_index[0])
         three_chord_index = threeChordMapping(most_freq_closet_index)
         # TODO: chord mapping
