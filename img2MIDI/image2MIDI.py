@@ -4,6 +4,10 @@ import numpy as np
 import pretty_midi
 import sys
 
+chord_progress = {
+    '1645': [0, 9, 5, 7],
+}
+
 
 def findClosest(A, B, C):
     A = A.tolist()
@@ -124,9 +128,11 @@ def melody(note_list):
     # Apply 1645  root: (n, n+9, n+5, n+7)
     temp_list = []
     for i in range(1, len(note_list)):
+        # Find out consecutive root note, which has same note values
         if root_list[i] == root_list[i-1]:
             temp_list.append(i-1)
         else:
+            temp_list.append(i-1)
             root = root_list[temp_list[0]]
             k = 0
             for item in temp_list:
@@ -143,8 +149,8 @@ def melody(note_list):
                     root_list[item] = root_list[item] + 7
                     note_list[item] = [i + 7 for i in note_list[item]]
                 k += 1
-
-            temp_list = [i]
+            print("temp list: ", temp_list)
+            temp_list = []
 
     print(root_list)
     return note_list
