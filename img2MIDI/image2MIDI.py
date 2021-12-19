@@ -8,6 +8,7 @@ chord_progress = {
     # Example in C Major
     '1645': [0, 9, 5, 7],  # C Am F G (Folk)
     '1564': [0, 7, 9, 5],  # C G Am F (Pop-Punk Progression)
+    '1563': [0, 7, 9, 4],  # C G Am Em (My original song progressive)
     '6415': [0, -4, -9, -2],  # Am F C G
     '15634125': [0, 7, 9, 4, 5, 0, 2, 7],  # C G Am Em F C Dm G (Canon)
     '4536251': [0, 2, -1, 4, -3, 2, -5],  # F G Em Am Dm G C
