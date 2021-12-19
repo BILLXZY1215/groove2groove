@@ -123,7 +123,7 @@ def threeChordMapping(note_list):
     return new_note_list
 
 
-def melody(note_list):
+def melody(note_list, chord_progress_type):
     root_list = [i[0] for i in note_list]
     # Apply 1645  root: (n, n+9, n+5, n+7)
     temp_list = []
@@ -136,18 +136,14 @@ def melody(note_list):
             root = root_list[temp_list[0]]
             k = 0
             for item in temp_list:
-                if k % 4 == 1:
-                    # 6
-                    root_list[item] = root_list[item] + 9
-                    note_list[item] = [i + 9 for i in note_list[item]]
-                if k % 4 == 2:
-                    # 4
-                    root_list[item] = root_list[item] + 5
-                    note_list[item] = [i + 5 for i in note_list[item]]
-                if k % 4 == 3:
-                    # 5
-                    root_list[item] = root_list[item] + 7
-                    note_list[item] = [i + 7 for i in note_list[item]]
+                chord_progress_length = len(
+                    chord_progress[chord_progress_type])
+                for x in range(1, chord_progress_length):
+                    if k % chord_progress_length == x:
+                        root_list[item] = root_list[item] + \
+                            chord_progress[chord_progress_type][x]
+                        note_list[item] = [
+                            i + chord_progress[chord_progress_type][x] for i in note_list[item]]
                 k += 1
             print("temp list: ", temp_list)
             temp_list = []
@@ -156,7 +152,7 @@ def melody(note_list):
     return note_list
 
 
-def image2MIDI(image_path, interval):
+def image2MIDI(image_path, interval, chord_progress_type):
     interval = float(interval)
     c_chord = pretty_midi.PrettyMIDI()
     # Create an Instrument instance for a specified instrument
@@ -218,7 +214,8 @@ def image2MIDI(image_path, interval):
     # Set: (0, +3, +7), (0, +4, +7)
     # TODO: Implement chord database
     # chord_progress = [C, Am, F, G]  # Sample: 1645
-    three_chord_melody_indices = melody(three_chord_indices)
+    three_chord_melody_indices = melody(
+        three_chord_indices, chord_progress_type)
     for three_chord_index in three_chord_melody_indices:
         for note_name in three_chord_index:
             note_number = note_name + 21
@@ -239,5 +236,6 @@ def image2MIDI(image_path, interval):
 
 image_path = sys.argv[1]
 interval = sys.argv[2]
+chord_progress_type = sys.argv[3]
 
-image2MIDI(image_path, interval)
+image2MIDI(image_path, interval, chord_progress_type)
