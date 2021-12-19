@@ -4,6 +4,8 @@ import numpy as np
 import pretty_midi
 import sys
 import webcolors
+import math
+from collections import Counter
 
 colormap = {
     # (R, G, B)
@@ -25,15 +27,39 @@ colormap = {
 }
 
 
+def three_distance(x, y, z):
+    return math.sqrt(x**2 + y**2 + z**2)
+
+
+def findClosest(rgb):
+    # rgb: (R, G, B)
+    min_distance = sys.maxsize
+    res = ''
+    for note in colormap:
+        delta_R = rgb[0] - colormap[note][0]
+        delta_G = rgb[1] - colormap[note][1]
+        delta_B = rgb[2] - colormap[note][2]
+        dist = three_distance(delta_R, delta_G, delta_B)
+        if (dist < min_distance):
+            min_distance = dist
+            res = note
+    return res
+
+
 def imageColor2MIDI(image_path, interval):
     interval = float(interval)
     img = Image.open(image_path)  # RGB Matrix
-    # img = img.resize((88, 100))
+    img = img.resize((64, 64))  # resize to a portable size
     if img.mode == 'RGB':
-        pixels = list(img.convert('RGB').getdata())
-        for r, g, b in pixels:  # just ignore the alpha channel
-            rgb = (r, g, b)
-            print(rgb)
+        img = list(img.convert('RGB').getdata())
+        pixels = [(item, img.count(item)) for item in set(img)]
+        # sort by frequency
+        pixels = sorted(pixels, key=lambda x: x[1], reverse=True)
+        notes = []
+        for color, _ in pixels:
+            rgb = (color[0], color[1], color[2])
+            notes.append(findClosest(rgb))
+        print(notes)
     else:
         print('Unimplemented image type')
 
