@@ -5,7 +5,14 @@ import pretty_midi
 import sys
 
 chord_progress = {
-    '1645': [0, 9, 5, 7],
+    # Example in C Major
+    '1645': [0, 9, 5, 7],  # C Am F G (Folk)
+    '1564': [0, 7, 9, 5],  # C G Am F (Pop-Punk Progression)
+    '6415': [0, -4, -9, -2],  # Am F C G
+    '15634125': [0, 7, 9, 4, 5, 0, 2, 7],  # C G Am Em F C Dm G (Canon)
+    '4536251': [0, 2, -1, 4, -3, 2, -5],  # F G Em Am Dm G C
+    '1526415': [0, 7, 2, 9, 5, 0, 7],  # C G Dm Am F C G
+    '2514736': [0, 5, -2, 3, 9, 2, 7],  # Dm G C F Bm Em Am
 }
 
 
