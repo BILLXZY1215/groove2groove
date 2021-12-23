@@ -26,6 +26,21 @@ colormap = {
     'A#': (255, 228, 225),  # mistyrose
 }
 
+C_Major = {
+    'C': 72,  # C5
+    'C#': 73,
+    'D': 74,
+    'D#': 75,
+    'E': 76,
+    'F': 77,
+    'F#': 78,
+    'G': 79,
+    'G#': 80,
+    'A': 81,
+    'A#': 82,
+    'B': 83,
+}
+
 
 def three_distance(x, y, z):
     return math.sqrt(x**2 + y**2 + z**2)
@@ -46,6 +61,10 @@ def findClosest(rgb):
     return res
 
 
+def noteName2Value(note_name):
+    return C_Major[note_name]
+
+
 def imageColor2MIDI(image_path, interval):
     interval = float(interval)
     img = Image.open(image_path)  # RGB Matrix
@@ -58,7 +77,7 @@ def imageColor2MIDI(image_path, interval):
         notes = []
         for color, _ in pixels:
             rgb = (color[0], color[1], color[2])
-            notes.append(findClosest(rgb))
+            notes.append(noteName2Value(findClosest(rgb)))
         print(notes)
     else:
         print('Unimplemented image type')
