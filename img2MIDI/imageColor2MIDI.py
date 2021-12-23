@@ -41,6 +41,18 @@ C_Major = {
     'B': 83,
 }
 
+chord_progress = {
+    # Example in C Major
+    '1645': [0, 9, 5, 7],  # C Am F G (Folk)
+    '1564': [0, 7, 9, 5],  # C G Am F (Pop-Punk Progression)
+    '1563': [0, 7, 9, 4],  # C G Am Em (My original song progressive)
+    '6415': [0, -4, -9, -2],  # Am F C G
+    '15634125': [0, 7, 9, 4, 5, 0, 2, 7],  # C G Am Em F C Dm G (Canon)
+    '4536251': [0, 2, -1, 4, -3, 2, -5],  # F G Em Am Dm G C
+    '1526415': [0, 7, 2, 9, 5, 0, 7],  # C G Dm Am F C G
+    '2514736': [0, 5, -2, 3, 9, 2, 7],  # Dm G C F Bm Em Am
+}
+
 
 def three_distance(x, y, z):
     return math.sqrt(x**2 + y**2 + z**2)
@@ -65,7 +77,33 @@ def noteName2Value(note_name):
     return C_Major[note_name]
 
 
-def imageColor2MIDI(image_path, interval):
+def melody(note_list, chord_progress_type):
+    root_list = [i[0] for i in note_list]
+    # Apply 1645  root: (n, n+9, n+5, n+7)
+    temp_list = []
+    for i in range(1, len(note_list)):
+        # Find out consecutive root note, which has same note values
+        if root_list[i] == root_list[i-1]:
+            temp_list.append(i-1)
+        else:
+            temp_list.append(i-1)
+            root = root_list[temp_list[0]]
+            k = 0
+            for item in temp_list:
+                chord_progress_length = len(
+                    chord_progress[chord_progress_type])
+                for x in range(1, chord_progress_length):
+                    if k % chord_progress_length == x:
+                        root_list[item] = root_list[item] + \
+                            chord_progress[chord_progress_type][x]
+                        note_list[item] = [
+                            i + chord_progress[chord_progress_type][x] for i in note_list[item]]
+                k += 1
+            temp_list = []
+    return note_list
+
+
+def imageColor2MIDI(image_path, interval, chord_progress_type):
     interval = float(interval)
     img = Image.open(image_path)  # RGB Matrix
     img = img.resize((64, 64))  # resize to a portable size
@@ -78,6 +116,9 @@ def imageColor2MIDI(image_path, interval):
         for color, _ in pixels:
             rgb = (color[0], color[1], color[2])
             notes.append(noteName2Value(findClosest(rgb)))
+        notes = [[note, note+3, note+7]
+                 for note in notes]  # Default (0, +4, +7) Major Triad
+        notes = melody(notes, chord_progress_type)
         print(notes)
     else:
         print('Unimplemented image type')
@@ -85,5 +126,6 @@ def imageColor2MIDI(image_path, interval):
 
 image_path = sys.argv[1]
 interval = sys.argv[2]
+chord_progress_type = sys.argv[3]
 
-imageColor2MIDI(image_path, interval)
+imageColor2MIDI(image_path, interval, chord_progress_type)
