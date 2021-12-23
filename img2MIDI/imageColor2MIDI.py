@@ -105,6 +105,9 @@ def melody(note_list, chord_progress_type):
 
 def imageColor2MIDI(image_path, interval, chord_progress_type):
     interval = float(interval)
+    c_chord = pretty_midi.PrettyMIDI()
+    EGP = pretty_midi.Instrument(
+        program=pretty_midi.instrument_name_to_program('Electric Grand Piano'))
     img = Image.open(image_path)  # RGB Matrix
     img = img.resize((64, 64))  # resize to a portable size
     if img.mode == 'RGB':
@@ -119,7 +122,17 @@ def imageColor2MIDI(image_path, interval, chord_progress_type):
         notes = [[note, note+3, note+7]
                  for note in notes]  # Default (0, +4, +7) Major Triad
         notes = melody(notes, chord_progress_type)
-        print(notes)
+        # print(notes)
+        i = 0
+        for items in notes:
+            for item in items:
+                note = pretty_midi.Note(
+                    velocity=100, pitch=item, start=0+interval*i, end=interval*(i+1))
+                EGP.notes.append(note)
+            i = i + 1
+        c_chord.instruments.append(EGP)
+        c_chord.write('content_ICM.mid')
+
     else:
         print('Unimplemented image type')
 
