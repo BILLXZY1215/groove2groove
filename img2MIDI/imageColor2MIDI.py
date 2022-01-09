@@ -6,6 +6,7 @@ import sys
 import webcolors
 import math
 from collections import Counter
+import matplotlib.pyplot as plt
 
 colormap = {
     # (R, G, B)
@@ -113,7 +114,7 @@ def imageColor2MIDI(image_path, interval, chord_progress_type):
     if img.mode == 'RGB':
         img = list(img.convert('RGB').getdata())
         pixels = [(item, img.count(item)) for item in set(img)]
-        # sort by frequency
+        # sort by frequency (High Frequency RGB values appear first)
         pixels = sorted(pixels, key=lambda x: x[1], reverse=True)
         notes = []
         for color, _ in pixels:
@@ -122,7 +123,13 @@ def imageColor2MIDI(image_path, interval, chord_progress_type):
         notes = [[note, note+3, note+7]
                  for note in notes]  # Default (0, +4, +7) Major Triad
         notes = melody(notes, chord_progress_type)
-        # print(notes)
+        root_notes = [note[0] for note in notes]
+        n, bins, patches = plt.hist(
+            # bins: number of bars in histogram
+            # alpha: opacity
+            root_notes, facecolor='green', alpha=0.75)
+        plt.savefig(
+            './Histogram-RootNote-{}.jpg'.format(image_path.split('.')[0]))
         i = 0
         for items in notes:
             for item in items:
