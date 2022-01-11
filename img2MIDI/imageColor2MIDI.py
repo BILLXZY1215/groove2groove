@@ -171,7 +171,7 @@ def imageColor2MIDI(image_path, interval, chord_progress_type):
         n, bins, patches = plt.hist(
             # bins: number of bars in histogram
             # alpha: opacity
-            root_notes, facecolor='green', alpha=0.75)
+            root_notes, bins=max(root_notes)-min(root_notes), facecolor='green', alpha=0.75)
         plt.savefig(
             './histogram/Histogram-RootNote-{}.jpg'.format(image_path.split('.')[0]))
         i = 0
