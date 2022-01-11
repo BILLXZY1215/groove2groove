@@ -129,7 +129,7 @@ def imageColor2MIDI(image_path, interval, chord_progress_type):
             # alpha: opacity
             root_notes, facecolor='green', alpha=0.75)
         plt.savefig(
-            './Histogram-RootNote-{}.jpg'.format(image_path.split('.')[0]))
+            './histogram/Histogram-RootNote-{}.jpg'.format(image_path.split('.')[0]))
         i = 0
         for items in notes:
             for item in items:

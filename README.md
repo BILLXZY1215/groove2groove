@@ -86,6 +86,13 @@ python -m groove2groove.models.roll2seq_style_transfer --logdir $LOGDIR run-test
 
 Here, `keypairs.tsv` lists on each line a key from `content.db` and a key from `style.db` to use as inputs. Note that `content.db` and `style.db` may be the same file.
 
+To show a histogram of the midi file:
+
+```
+cd img2MIDI
+python histogram_mid.py Time-PinkFloyd.mid
+```
+
 ## Acknowledgment
 
 This work has received funding from the European Union’s Horizon 2020 research and innovation programme under the Marie Skłodowska-Curie grant agreement No. 765068.
