@@ -28,18 +28,18 @@ colormap = {
 }
 
 C_Major = {
-    'C': 72,  # C5
-    'C#': 73,
-    'D': 74,
-    'D#': 75,
-    'E': 76,
-    'F': 77,
-    'F#': 78,
-    'G': 79,
-    'G#': 80,
-    'A': 81,
-    'A#': 82,
-    'B': 83,
+    'C': 0,  # C5
+    'C#': 1,
+    'D': 2,
+    'D#': 3,
+    'E': 4,
+    'F': 5,
+    'F#': 6,
+    'G': 7,
+    'G#': 8,
+    'A': 9,
+    'A#': 10,
+    'B': 11,
 }
 
 chord_progress = {
@@ -104,6 +104,26 @@ def melody(note_list, chord_progress_type):
     return note_list
 
 
+# Octave Ranges
+# -1: 21-23 (A0, A#, B0)
+# 0: 24-35 (C1-B1)
+# 1: 36-47 (C2-B2)
+# 2: 48-59 (C3-B3)
+# 3: 60-71 (C4-B4)
+# 4: 72-83 (C5-B5)
+# 5: 84-95 (C6-B6)
+# 6: 96-107 (C7-B7)
+# 7: 108-119 (C8-B8)
+# 8: 120-127 (C9-G9)
+
+
+def note2octave(notes):
+    octaves = []
+    for note in notes:
+        octaves.append(int(note/12)-2)
+    return octaves
+
+
 def imageColor2MIDI(image_path, interval, chord_progress_type):
     interval = float(interval)
     c_chord = pretty_midi.PrettyMIDI()
@@ -116,18 +136,42 @@ def imageColor2MIDI(image_path, interval, chord_progress_type):
         pixels = [(item, img.count(item)) for item in set(img)]
         # sort by frequency (High Frequency RGB values appear first)
         pixels = sorted(pixels, key=lambda x: x[1], reverse=True)
+        # Combine Piano Row Matrix in Color information
+        img2 = np.array(Image.open(image_path))  # RGB Matrix
+        img2 = cv2.resize(img2, (len(pixels), 88))
+        img2 = np.dot(img2, [0.33, 0.33, 0.33])
+        # Find octave of the (most frequent and pixel-max) pixel value
+        octaves = []
+        for piano_row in img2.T:
+            unique_array = np.unique(piano_row, return_counts=True)
+            value_unique_array = unique_array[0]
+            count_unique_array = unique_array[1]
+            temp = np.sort(count_unique_array)
+            # Get the most frequent and pixel-max pixel value
+            max_freq_pixel = max(value_unique_array[np.where(
+                count_unique_array == temp[-1])])
+            max_freq_index = np.where(
+                piano_row == max_freq_pixel)
+            # Find the middle index of max_freq_index (+ 21)
+            octaves.append(max_freq_index[0]
+                           [int(len(max_freq_index[0])/2)] + 21)
+        octaves = note2octave(octaves)
         notes = []
+        k = 0
         for color, _ in pixels:
             rgb = (color[0], color[1], color[2])
-            notes.append(noteName2Value(findClosest(rgb)))
+            notes.append(12*(octaves[k] + 2) +
+                         noteName2Value(findClosest(rgb)))  # octave * 12 => note C, + offset
+            k += 1
         notes = [[note, note+3, note+7]
                  for note in notes]  # Default (0, +4, +7) Major Triad
         notes = melody(notes, chord_progress_type)
         root_notes = [note[0] for note in notes]
+        # print(root_notes)
         n, bins, patches = plt.hist(
             # bins: number of bars in histogram
             # alpha: opacity
-            root_notes, facecolor='green', alpha=0.75)
+            root_notes, bins=max(root_notes)-min(root_notes), facecolor='green', alpha=0.75)
         plt.savefig(
             './histogram/Histogram-RootNote-{}.jpg'.format(image_path.split('.')[0]))
         i = 0
