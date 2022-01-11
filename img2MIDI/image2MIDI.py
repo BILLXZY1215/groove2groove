@@ -175,7 +175,7 @@ def image2MIDI(image_path, interval, chord_progress_type):
         program=pretty_midi.instrument_name_to_program('Electric Grand Piano'))
 
     img = np.array(Image.open(image_path))  # RGB Matrix
-    img = cv2.resize(img, (88, 100))
+    img = cv2.resize(img, (100, 88))
     img = np.dot(img, [0.33, 0.33, 0.33])  # TODO: improvement on colors
 
     i = 0
@@ -205,7 +205,8 @@ def image2MIDI(image_path, interval, chord_progress_type):
         three_chord_index = threeChordMapping(most_freq_closet_index)
         # print(three_chord_index)
         three_chord_indices.append(three_chord_index)
-        # TODO: chord mapping
+        k += 1
+    # TODO: chord mapping
     # Iterate over note names, which will be converted to note number later
     # Example: C Major
     # C D E F G A B C
