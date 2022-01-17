@@ -205,7 +205,6 @@ def image2MIDI(image_path, interval, chord_progress_type):
         three_chord_index = threeChordMapping(most_freq_closet_index)
         # print(three_chord_index)
         three_chord_indices.append(three_chord_index)
-        k += 1
     # TODO: chord mapping
     # Iterate over note names, which will be converted to note number later
     # Example: C Major
